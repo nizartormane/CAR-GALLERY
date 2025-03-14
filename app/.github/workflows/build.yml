@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js (juste pour ESLint et le build)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+
+      - name: Installer les dépendances
+        run: yarn install --frozen-lockfile
+
+      - name: Vérifier le code avec ESLint
+        run: yarn lint
+
+      - name: Construire le projet
+        run: yarn build
